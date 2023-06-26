@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/screens/restaurant_detail.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
+import '../models/local_restaurant.dart';
+
 class CardComponent extends StatelessWidget {
-  final Map<String, dynamic> restaurant;
+  final Restaurant restaurant;
   final double ratio;
 
   const CardComponent({
@@ -33,7 +35,7 @@ class CardComponent extends StatelessWidget {
                     bottomLeft: Radius.circular(10),
                   ),
                   child: Image.network(
-                    restaurant['pictureId'],
+                    restaurant.pictureId,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -63,7 +65,7 @@ class CardComponent extends StatelessWidget {
                               ),
                               SizedBox(width: ratio * 5),
                               Text(
-                                restaurant['city'],
+                                restaurant.city,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -79,9 +81,7 @@ class CardComponent extends StatelessWidget {
                               ),
                               SizedBox(width: ratio * 5),
                               Text(
-                                restaurant['rating']
-                                    .toString()
-                                    .padRight(2, '.0'),
+                                restaurant.rating.toString().padRight(2, '.0'),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -96,7 +96,7 @@ class CardComponent extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            restaurant['name'],
+                            restaurant.name,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!

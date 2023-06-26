@@ -20,7 +20,7 @@ class MenuComponent extends StatelessWidget {
         SizedBox(width: ratio * 15),
         Container(
           padding: const EdgeInsets.all(10),
-          height: ratio * 140,
+          height: ratio * 160,
           width: ratio * 140,
           decoration: BoxDecoration(
             color: lightGrey,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/models/local_restaurant.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 import '../components/card_component.dart';
@@ -44,14 +45,12 @@ class RestaurantList extends StatelessWidget {
                       .loadString('assets/local_restaurant.json'),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final jsonRespone =
-                          (jsonDecode(snapshot.data.toString()));
-                      final restaurants = jsonRespone['restaurants'] as List;
-                      // restaurants.map((e) => print(e['id'])).toList();
+                      final locaRestaurant = LocalRestaurant.fromJson(
+                          jsonDecode(snapshot.data.toString()));
                       return Expanded(
                         child: SingleChildScrollView(
                           child: Column(
-                              children: restaurants
+                              children: locaRestaurant.restaurants
                                   .map((restaurant) => CardComponent(
                                         restaurant: restaurant,
                                         ratio: ratio,

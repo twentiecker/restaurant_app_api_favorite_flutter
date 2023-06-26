@@ -1,4 +1,3 @@
-//palette.dart
 import 'package:flutter/material.dart';
 
 class PaletteTheme {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/components/menu_component.dart';
+import 'package:restaurant_app/models/local_restaurant.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 class RestaurantDetail extends StatelessWidget {
   static const routeName = '/restaurant_detail';
-  final Map<String, dynamic> restaurant;
+  final Restaurant restaurant;
 
   const RestaurantDetail({Key? key, required this.restaurant})
       : super(key: key);
@@ -24,7 +25,7 @@ class RestaurantDetail extends StatelessWidget {
               expandedHeight: ratio * 250,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.network(
-                  restaurant['pictureId'],
+                  restaurant.pictureId,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -48,7 +49,7 @@ class RestaurantDetail extends StatelessWidget {
                         ),
                         SizedBox(width: ratio * 5),
                         Text(
-                          restaurant['rating'].toString().padRight(2, '.0'),
+                          restaurant.rating.toString().padRight(2, '.0'),
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -56,7 +57,7 @@ class RestaurantDetail extends StatelessWidget {
                         ),
                         SizedBox(width: ratio * 10),
                         Text(
-                          restaurant['name'],
+                          restaurant.name,
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
@@ -78,7 +79,7 @@ class RestaurantDetail extends StatelessWidget {
                     ),
                     SizedBox(width: ratio * 5),
                     Text(
-                      restaurant['city'],
+                      restaurant.city,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -102,7 +103,7 @@ class RestaurantDetail extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
-                  restaurant['description'],
+                  restaurant.description,
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
@@ -137,10 +138,10 @@ class RestaurantDetail extends StatelessWidget {
                 child: Row(
                   children: [
                     Row(
-                        children: (restaurant['menus']['foods'] as List)
+                        children: restaurant.menus.foods
                             .map((food) => MenuComponent(
                                   icon: Icons.rice_bowl_outlined,
-                                  menu: food['name'],
+                                  menu: food.name,
                                   ratio: ratio,
                                 ))
                             .toList()),
@@ -165,10 +166,10 @@ class RestaurantDetail extends StatelessWidget {
                 child: Row(
                   children: [
                     Row(
-                        children: (restaurant['menus']['drinks'] as List)
+                        children: restaurant.menus.drinks
                             .map((drink) => MenuComponent(
                                   icon: Icons.local_drink_outlined,
-                                  menu: drink['name'],
+                                  menu: drink.name,
                                   ratio: ratio,
                                 ))
                             .toList()),
