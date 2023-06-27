@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/screens/restaurant_detail.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
-import '../models/local_restaurant.dart';
+import '../models/list_restaurant.dart';
+import '../screens/restaurant_detail_api.dart';
+
+// import '../models/local_restaurant.dart';
 
 class CardComponent extends StatelessWidget {
   final Restaurant restaurant;
@@ -18,8 +21,8 @@ class CardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, RestaurantDetail.routeName,
-            arguments: restaurant);
+        Navigator.pushNamed(context, RestaurantDetailApi.routeName,
+            arguments: restaurant.id);
       },
       child: Column(
         children: [
@@ -35,7 +38,7 @@ class CardComponent extends StatelessWidget {
                     bottomLeft: Radius.circular(10),
                   ),
                   child: Image.network(
-                    restaurant.pictureId,
+                    'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
                     fit: BoxFit.cover,
                   ),
                 ),

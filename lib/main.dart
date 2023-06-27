@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/models/local_restaurant.dart';
+
+// import 'package:restaurant_app/models/local_restaurant.dart';
 import 'package:restaurant_app/screens/restaurant_detail.dart';
+import 'package:restaurant_app/screens/restaurant_detail_api.dart';
 import 'package:restaurant_app/screens/restaurant_list.dart';
+import 'package:restaurant_app/screens/restaurant_list_api.dart';
 import 'package:restaurant_app/utils/pallete_theme.dart';
 import 'package:restaurant_app/utils/roboto_theme.dart';
+
+import 'models/detail_restaurant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,12 +26,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: PaletteTheme.kToDark,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: RestaurantList.routeName,
+      initialRoute: RestaurantListApi.routeName,
       routes: {
-        RestaurantList.routeName: (context) => const RestaurantList(),
-        RestaurantDetail.routeName: (context) => RestaurantDetail(
-            restaurant:
-                ModalRoute.of(context)?.settings.arguments as Restaurant)
+        RestaurantListApi.routeName: (context) => const RestaurantListApi(),
+        RestaurantDetailApi.routeName: (context) => RestaurantDetailApi(
+              id: ModalRoute.of(context)?.settings.arguments as String,
+            )
       },
     );
   }
