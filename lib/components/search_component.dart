@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
-import '../models/list_restaurant.dart';
+import '../models/search_restaurant.dart';
 import '../screens/restaurant_detail.dart';
 
-class CardComponent extends StatelessWidget {
+class SearchComponent extends StatelessWidget {
   final Restaurant restaurant;
   final double ratio;
 
-  const CardComponent({
+  const SearchComponent({
     Key? key,
     required this.restaurant,
     required this.ratio,
