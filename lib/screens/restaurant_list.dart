@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/api/api_service.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/components/state_component.dart';
+import 'package:restaurant_app/provider/list_restaurant_provider.dart';
 import 'package:restaurant_app/screens/restaurant_search.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 import '../components/card_component.dart';
-import '../models/list_restaurant.dart';
 
-class RestaurantList extends StatefulWidget {
+class RestaurantList extends StatelessWidget {
   static const routeName = '/restaurant_list';
 
   const RestaurantList({Key? key}) : super(key: key);
-
-  @override
-  State<RestaurantList> createState() => _RestaurantListState();
-}
-
-class _RestaurantListState extends State<RestaurantList> {
-  late Future<ListRestaurant> _listRestaurant;
-
-  @override
-  void initState() {
-    super.initState();
-    _listRestaurant = ApiService().listRestaurant();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +31,15 @@ class _RestaurantListState extends State<RestaurantList> {
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(0),
-                          backgroundColor: grey,
-                          minimumSize: Size.square(25),),
+                        padding: const EdgeInsets.all(0),
+                        backgroundColor: grey,
+                        minimumSize: const Size.square(25),
+                      ),
                       onPressed: () {
                         Navigator.pushNamed(
                             context, RestaurantSearch.routeName);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.search_sharp,
                         color: Colors.white,
                       )),
@@ -72,38 +61,57 @@ class _RestaurantListState extends State<RestaurantList> {
                     .copyWith(color: white),
               ),
               SizedBox(height: ratio * 30),
-              FutureBuilder<ListRestaurant>(
-                  future: _listRestaurant,
-                  builder: (context, AsyncSnapshot<ListRestaurant> snapshot) {
-                    var state = snapshot.connectionState;
-                    if (state != ConnectionState.done) {
-                      return const Expanded(
-                          child: Center(child: CircularProgressIndicator()));
-                    } else {
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: snapshot.data!.restaurants
-                                  .map((restaurant) => CardComponent(
-                                        restaurant: restaurant,
-                                        ratio: ratio,
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Expanded(
-                            child:
-                                Center(child: Text(snapshot.error.toString())));
-                      } else {
-                        return const Center(
-                          child: Expanded(child: Text('')),
-                        );
-                      }
-                    }
-                  }),
+              Consumer<ListRestaurantProvider>(
+                builder: (context, state, _) {
+                  if (state.state == ResultState.loading) {
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else if (state.state == ResultState.hasData) {
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: state.result.restaurants
+                              .map((restaurant) => CardComponent(
+                                    restaurant: restaurant,
+                                    ratio: ratio,
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    );
+                  } else if (state.state == ResultState.noData) {
+                    return Expanded(
+                      child: Center(
+                        child: StateComponent(
+                          icon: Icons.not_interested_rounded,
+                          message: state.message,
+                          ratio: ratio,
+                        ),
+                      ),
+                    );
+                  } else if (state.state == ResultState.error) {
+                    return Expanded(
+                      child: Center(
+                        child: StateComponent(
+                          icon:
+                              Icons.signal_wifi_connected_no_internet_4_rounded,
+                          message: 'No Internet Connection',
+                          ratio: ratio,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Expanded(
+                        child: Text(''),
+                      ),
+                    );
+                  }
+                },
+              ),
               SizedBox(height: ratio * 20)
             ],
           ),

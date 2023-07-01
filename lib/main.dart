@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/api/api_service.dart';
+import 'package:restaurant_app/provider/list_restaurant_provider.dart';
+import 'package:restaurant_app/provider/search_restaurant_provider.dart';
 
 import 'package:restaurant_app/screens/restaurant_detail.dart';
 import 'package:restaurant_app/screens/restaurant_list.dart';
@@ -15,21 +19,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Restaurant App',
-      theme: ThemeData(
-        textTheme: robotoTheme,
-        primarySwatch: PaletteTheme.kToDark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) =>
+              ListRestaurantProvider(apiService: ApiService()),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) =>
+              SearchRestaurantProvider(apiService: ApiService()),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Restaurant App',
+        theme: ThemeData(
+          textTheme: robotoTheme,
+          primarySwatch: PaletteTheme.kToDark,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: RestaurantList.routeName,
+        routes: {
+          RestaurantList.routeName: (context) => const RestaurantList(),
+          RestaurantDetail.routeName: (context) => RestaurantDetail(
+              id: ModalRoute.of(context)?.settings.arguments as String),
+          RestaurantSearch.routeName: (context) => const RestaurantSearch()
+        },
       ),
-      initialRoute: RestaurantList.routeName,
-      routes: {
-        RestaurantList.routeName: (context) => const RestaurantList(),
-        RestaurantDetail.routeName: (context) => RestaurantDetail(
-              id: ModalRoute.of(context)?.settings.arguments as String,
-            ),
-        RestaurantSearch.routeName: (context) => RestaurantSearch()
-      },
     );
   }
 }

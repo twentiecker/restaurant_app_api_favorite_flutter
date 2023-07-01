@@ -18,8 +18,11 @@ class CardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, RestaurantDetail.routeName,
-            arguments: restaurant.id);
+        Navigator.pushNamed(
+          context,
+          RestaurantDetail.routeName,
+          arguments: restaurant.id,
+        );
       },
       child: Column(
         children: [
