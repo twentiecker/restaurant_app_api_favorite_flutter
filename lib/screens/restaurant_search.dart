@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/components/card_component.dart';
 import 'package:restaurant_app/components/state_component.dart';
-import 'package:restaurant_app/components/search_component.dart';
 import 'package:restaurant_app/provider/search_restaurant_provider.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
+
+import '../models/list_restaurant.dart';
+import '../utils/result_state.dart';
 
 class RestaurantSearch extends StatelessWidget {
   static const routeName = '/restaurant_search';
@@ -26,6 +29,7 @@ class RestaurantSearch extends StatelessWidget {
               SizedBox(height: ratio * 20),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     padding: const EdgeInsets.all(0),
                     alignment: Alignment.centerLeft,
                     backgroundColor: grey,
@@ -87,12 +91,20 @@ class RestaurantSearch extends StatelessWidget {
                     return Expanded(
                       child: SingleChildScrollView(
                         child: Column(
-                          children: state.result.restaurants
-                              .map((restaurant) => SearchComponent(
-                                    restaurant: restaurant,
-                                    ratio: ratio,
-                                  ))
-                              .toList(),
+                          children: state.result.restaurants.map((restaurant) {
+                            final Restaurant listSearchRestaurant = Restaurant(
+                              id: restaurant.id,
+                              name: restaurant.name,
+                              description: restaurant.description,
+                              pictureId: restaurant.pictureId,
+                              city: restaurant.city,
+                              rating: restaurant.rating,
+                            );
+                            return CardComponent(
+                              restaurant: listSearchRestaurant,
+                              ratio: ratio,
+                            );
+                          }).toList(),
                         ),
                       ),
                     );

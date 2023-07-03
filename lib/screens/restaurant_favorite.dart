@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/components/state_component.dart';
-import 'package:restaurant_app/provider/list_restaurant_provider.dart';
-import 'package:restaurant_app/screens/restaurant_favorite.dart';
+import 'package:restaurant_app/provider/database_provider.dart';
 import 'package:restaurant_app/screens/restaurant_search.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 import '../components/card_component.dart';
 import '../utils/result_state.dart';
 
-class RestaurantList extends StatelessWidget {
-  static const routeName = '/restaurant_list';
+class RestaurantFavorite extends StatelessWidget {
+  static const routeName = '/restaurant_favorite';
 
-  const RestaurantList({Key? key}) : super(key: key);
+  const RestaurantFavorite({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,42 +28,41 @@ class RestaurantList extends StatelessWidget {
             children: [
               SizedBox(height: ratio * 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                         padding: const EdgeInsets.all(0),
                         backgroundColor: grey,
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.centerLeft,
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, RestaurantSearch.routeName);
+                        Navigator.pop(context);
                       },
                       child: const Icon(
-                        Icons.search_sharp,
+                        Icons.arrow_back_sharp,
                         color: Colors.white,
                       )),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: grey,
-                        alignment: Alignment.centerRight,
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RestaurantFavorite.routeName);
-                      },
-                      child: const Icon(
-                        Icons.star,
-                        color: Colors.white,
-                      )),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      padding: const EdgeInsets.all(0),
+                      backgroundColor: grey,
+                      alignment: Alignment.centerRight,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, RestaurantSearch.routeName);
+                    },
+                    child: const Icon(
+                      Icons.search_sharp,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
               Text(
-                'Restaurant',
+                'Favorites',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
@@ -72,26 +70,20 @@ class RestaurantList extends StatelessWidget {
               ),
               SizedBox(height: ratio * 10),
               Text(
-                'Recommendation restaurant for you!',
+                'List of your favorite restaurants!',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
                     .copyWith(color: white),
               ),
               SizedBox(height: ratio * 30),
-              Consumer<ListRestaurantProvider>(
-                builder: (context, state, _) {
-                  if (state.state == ResultState.loading) {
-                    return const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (state.state == ResultState.hasData) {
+              Consumer<DatabaseProvider>(
+                builder: (context, provider, _) {
+                  if (provider.state == ResultState.hasData) {
                     return Expanded(
                       child: SingleChildScrollView(
                         child: Column(
-                          children: state.result.restaurants
+                          children: provider.bookmarks
                               .map((restaurant) => CardComponent(
                                     restaurant: restaurant,
                                     ratio: ratio,
@@ -100,23 +92,12 @@ class RestaurantList extends StatelessWidget {
                         ),
                       ),
                     );
-                  } else if (state.state == ResultState.noData) {
+                  } else if (provider.state == ResultState.noData) {
                     return Expanded(
                       child: Center(
                         child: StateComponent(
                           icon: Icons.not_interested_rounded,
-                          message: state.message,
-                          ratio: ratio,
-                        ),
-                      ),
-                    );
-                  } else if (state.state == ResultState.error) {
-                    return Expanded(
-                      child: Center(
-                        child: StateComponent(
-                          icon:
-                              Icons.signal_wifi_connected_no_internet_4_rounded,
-                          message: 'No Internet Connection',
+                          message: provider.message,
                           ratio: ratio,
                         ),
                       ),

@@ -2,8 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:restaurant_app/api/api_service.dart';
 
 import '../models/list_restaurant.dart';
-
-enum ResultState { loading, noData, hasData, error }
+import '../utils/result_state.dart';
 
 class ListRestaurantProvider extends ChangeNotifier {
   final ApiService apiService;

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/components/state_component.dart';
 import 'package:restaurant_app/components/menu_component.dart';
+import 'package:restaurant_app/models/list_restaurant.dart';
+import 'package:restaurant_app/provider/database_provider.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 import '../api/api_service.dart';
 import '../provider/detail_restaurant_provider.dart';
+import '../utils/result_state.dart';
 
 class RestaurantDetail extends StatelessWidget {
   static const routeName = '/restaurant_detail';
@@ -64,28 +67,70 @@ class RestaurantDetail extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: lightOrange,
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: lightOrange,
+                                    ),
+                                    SizedBox(width: ratio * 5),
+                                    Text(
+                                      state.result.restaurant.rating
+                                          .toString()
+                                          .padRight(2, '.0'),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(color: white),
+                                    ),
+                                    SizedBox(width: ratio * 10),
+                                    Text(
+                                      state.result.restaurant.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(color: white),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: ratio * 5),
-                                Text(
-                                  state.result.restaurant.rating
-                                      .toString()
-                                      .padRight(2, '.0'),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(color: white),
-                                ),
-                                SizedBox(width: ratio * 10),
-                                Text(
-                                  state.result.restaurant.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(color: white),
+                                Consumer<DatabaseProvider>(
+                                  builder: (context, provider, child) {
+                                    return FutureBuilder(
+                                      future: provider.isBookmarked(id),
+                                      builder: (context, snapshot) {
+                                        var isBookmarked =
+                                            snapshot.data ?? false;
+                                        final Restaurant restaurant = Restaurant(
+                                          id: state.result.restaurant.id,
+                                          name: state.result.restaurant.name,
+                                          description: state
+                                              .result.restaurant.description,
+                                          pictureId:
+                                              state.result.restaurant.pictureId,
+                                          city: state.result.restaurant.city,
+                                          rating:
+                                              state.result.restaurant.rating,
+                                        );
+                                        return isBookmarked
+                                            ? IconButton(
+                                                icon: Icon(
+                                                    Icons.favorite_rounded),
+                                                color: green,
+                                                onPressed: () =>
+                                                    provider.removeBookmark(id),
+                                              )
+                                            : IconButton(
+                                                icon: Icon(Icons
+                                                    .favorite_border_rounded),
+                                                color: green,
+                                                onPressed: () => provider
+                                                    .addBookmark(restaurant),
+                                              );
+                                      },
+                                    );
+                                  },
                                 ),
                               ],
                             ),
