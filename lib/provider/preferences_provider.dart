@@ -6,35 +6,21 @@ class PreferencesProvider extends ChangeNotifier {
   PreferencesHelper preferencesHelper;
 
   PreferencesProvider({required this.preferencesHelper}) {
-    _getTheme();
-    _getDailyNewsPreferences();
+    _getDailyRestaurantsPreferences();
   }
 
-  bool _isDarkTheme = false;
+  bool _isDailyRestaurantsActive = false;
 
-  bool get isDarkTheme => _isDarkTheme;
+  bool get isDailyRestaurantsActive => _isDailyRestaurantsActive;
 
-  bool _isDailyNewsActive = false;
-
-  bool get isDailyNewsActive => _isDailyNewsActive;
-
-  void _getTheme() async {
-    _isDarkTheme = await preferencesHelper.isDarkTheme;
+  void _getDailyRestaurantsPreferences() async {
+    _isDailyRestaurantsActive =
+        await preferencesHelper.isDailyRestaurantsActive;
     notifyListeners();
   }
 
-  void _getDailyNewsPreferences() async {
-    _isDailyNewsActive = await preferencesHelper.isDailyNewsActive;
-    notifyListeners();
-  }
-
-  void enableDarkTheme(bool value) {
-    preferencesHelper.setDarkTheme(value);
-    _getTheme();
-  }
-
-  void enableDailyNews(bool value) {
-    preferencesHelper.setDailyNews(value);
-    _getDailyNewsPreferences();
+  void enableDailyRestaurants(bool value) {
+    preferencesHelper.setDailyRestaurants(value);
+    _getDailyRestaurantsPreferences();
   }
 }

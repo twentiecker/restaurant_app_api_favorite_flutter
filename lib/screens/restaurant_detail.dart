@@ -42,8 +42,10 @@ class RestaurantDetail extends StatelessWidget {
               );
             } else if (state.state == ResultState.hasData) {
               return NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
+                headerSliverBuilder: (
+                  BuildContext context,
+                  bool innerBoxIsScrolled,
+                ) {
                   return [
                     SliverAppBar(
                       pinned: true,
@@ -61,15 +63,18 @@ class RestaurantDetail extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
+                      SizedBox(height: ratio * 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: ratio * 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Row(
                                   children: [
                                     const Icon(
                                       Icons.star,
@@ -95,67 +100,73 @@ class RestaurantDetail extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                Consumer<DatabaseProvider>(
-                                  builder: (context, provider, child) {
-                                    return FutureBuilder(
-                                      future: provider.isBookmarked(id),
-                                      builder: (context, snapshot) {
-                                        var isBookmarked =
-                                            snapshot.data ?? false;
-                                        final Restaurant restaurant = Restaurant(
-                                          id: state.result.restaurant.id,
-                                          name: state.result.restaurant.name,
-                                          description: state
-                                              .result.restaurant.description,
-                                          pictureId:
-                                              state.result.restaurant.pictureId,
-                                          city: state.result.restaurant.city,
-                                          rating:
-                                              state.result.restaurant.rating,
-                                        );
-                                        return isBookmarked
-                                            ? IconButton(
-                                                icon: Icon(
-                                                    Icons.favorite_rounded),
-                                                color: green,
-                                                onPressed: () =>
-                                                    provider.removeBookmark(id),
-                                              )
-                                            : IconButton(
-                                                icon: Icon(Icons
-                                                    .favorite_border_rounded),
-                                                color: green,
-                                                onPressed: () => provider
-                                                    .addBookmark(restaurant),
-                                              );
-                                      },
-                                    );
-                                  },
+                              ),
+                              SizedBox(height: ratio * 5),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: white,
+                                    ),
+                                    SizedBox(width: ratio * 5),
+                                    Text(
+                                      state.result.restaurant.city,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: white),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Consumer<DatabaseProvider>(
+                              builder: (context, provider, child) {
+                                return FutureBuilder(
+                                  future: provider.isBookmarked(id),
+                                  builder: (context, snapshot) {
+                                    var isBookmarked = snapshot.data ?? false;
+                                    final Restaurant restaurant = Restaurant(
+                                      id: state.result.restaurant.id,
+                                      name: state.result.restaurant.name,
+                                      description:
+                                          state.result.restaurant.description,
+                                      pictureId:
+                                          state.result.restaurant.pictureId,
+                                      city: state.result.restaurant.city,
+                                      rating: state.result.restaurant.rating,
+                                    );
+                                    return isBookmarked
+                                        ? InkWell(
+                                            onTap: () =>
+                                                provider.removeBookmark(id),
+                                            child: Icon(
+                                              Icons.favorite_rounded,
+                                              color: green,
+                                              size: ratio * 35,
+                                            ),
+                                          )
+                                        : InkWell(
+                                            onTap: () => provider
+                                                .addBookmark(restaurant),
+                                            child:  Icon(
+                                              Icons.favorite_border_rounded,
+                                              color: green,
+                                              size: ratio * 35,
+                                            ),
+                                          );
+                                  },
+                                );
+                              },
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(height: ratio * 5),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: white,
-                            ),
-                            SizedBox(width: ratio * 5),
-                            Text(
-                              state.result.restaurant.city,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: white),
-                            ),
-                          ],
-                        ),
                       ),
                       SizedBox(height: ratio * 20),
                       Padding(

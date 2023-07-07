@@ -39,7 +39,7 @@ class CardComponent extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: ratio * 120,
-                        height: ratio * 100,
+                        height: ratio * 90,
                         child: ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -60,7 +60,7 @@ class CardComponent extends StatelessWidget {
                               bottomRight: Radius.circular(10),
                             ),
                           ),
-                          height: ratio * 100,
+                          height: ratio * 90,
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,19 +118,22 @@ class CardComponent extends StatelessWidget {
                                         .copyWith(color: white),
                                   ),
                                   isBookmarked
-                                      ? IconButton(
-                                          icon: Icon(Icons.favorite_rounded),
-                                          color: green,
-                                          onPressed: () => provider
+                                      ? InkWell(
+                                          onTap: () => provider
                                               .removeBookmark(restaurant.id),
+                                          child: const Icon(
+                                            Icons.favorite_rounded,
+                                            color: green,
+                                          ),
                                         )
-                                      : IconButton(
-                                          icon: Icon(
-                                              Icons.favorite_border_rounded),
-                                          color: green,
-                                          onPressed: () =>
+                                      : InkWell(
+                                          onTap: () =>
                                               provider.addBookmark(restaurant),
-                                        ),
+                                          child: const Icon(
+                                            Icons.favorite_border_rounded,
+                                            color: green,
+                                          ),
+                                        )
                                 ],
                               ),
                             ],

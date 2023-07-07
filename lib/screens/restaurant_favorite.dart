@@ -30,29 +30,21 @@ class RestaurantFavorite extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: grey,
-                        alignment: Alignment.centerLeft,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_sharp,
-                        color: Colors.white,
-                      )),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      padding: const EdgeInsets.all(0),
-                      backgroundColor: grey,
-                      alignment: Alignment.centerRight,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_sharp,
+                      color: Colors.white,
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, RestaurantSearch.routeName);
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RestaurantSearch.routeName,
+                      );
                     },
                     child: const Icon(
                       Icons.search_sharp,
@@ -61,6 +53,7 @@ class RestaurantFavorite extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: ratio * 20),
               Text(
                 'Favorites',
                 style: Theme.of(context)

@@ -5,26 +5,15 @@ class PreferencesHelper {
 
   PreferencesHelper({required this.sharedPreferences});
 
-  static const darkTheme = 'DARK_THEME';
-  static const dailyNews = 'DAILY_NEWS';
+  static const dailyRestaurants = 'DAILY_RESTAURANTS';
 
-  Future<bool> get isDarkTheme async {
+  Future<bool> get isDailyRestaurantsActive async {
     final prefs = await sharedPreferences;
-    return prefs.getBool(darkTheme) ?? false;
+    return prefs.getBool(dailyRestaurants) ?? false;
   }
 
-  void setDarkTheme(bool value) async {
+  void setDailyRestaurants(bool value) async {
     final prefs = await sharedPreferences;
-    prefs.setBool(darkTheme, value);
-  }
-
-  Future<bool> get isDailyNewsActive async {
-    final prefs = await sharedPreferences;
-    return prefs.getBool(dailyNews) ?? false;
-  }
-
-  void setDailyNews(bool value) async {
-    final prefs = await sharedPreferences;
-    prefs.setBool(dailyNews, value);
+    prefs.setBool(dailyRestaurants, value);
   }
 }

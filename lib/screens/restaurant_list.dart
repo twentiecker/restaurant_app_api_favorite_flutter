@@ -2,17 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/components/state_component.dart';
 import 'package:restaurant_app/provider/list_restaurant_provider.dart';
+import 'package:restaurant_app/screens/restaurant_detail.dart';
 import 'package:restaurant_app/screens/restaurant_favorite.dart';
 import 'package:restaurant_app/screens/restaurant_search.dart';
+import 'package:restaurant_app/screens/settings_page.dart';
 import 'package:restaurant_app/utils/color_theme.dart';
 
 import '../components/card_component.dart';
+import '../utils/notification_helper.dart';
 import '../utils/result_state.dart';
 
-class RestaurantList extends StatelessWidget {
+class RestaurantList extends StatefulWidget {
   static const routeName = '/restaurant_list';
 
   const RestaurantList({Key? key}) : super(key: key);
+
+  @override
+  State<RestaurantList> createState() => _RestaurantListState();
+}
+
+class _RestaurantListState extends State<RestaurantList> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationHelper.configureSelectNotificationSubject(
+      context,
+      RestaurantDetail.routeName,
+    );
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,38 +56,47 @@ class RestaurantList extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: grey,
-                        alignment: Alignment.centerRight,
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RestaurantSearch.routeName);
-                      },
-                      child: const Icon(
-                        Icons.search_sharp,
-                        color: Colors.white,
-                      )),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(0),
-                        backgroundColor: grey,
-                        alignment: Alignment.centerRight,
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RestaurantFavorite.routeName);
-                      },
-                      child: const Icon(
-                        Icons.star,
-                        color: Colors.white,
-                      )),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RestaurantSearch.routeName,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.search_sharp,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: ratio * 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RestaurantFavorite.routeName,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.star,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: ratio * 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        SettingsPage.routeName,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
+              SizedBox(height: ratio * 20),
               Text(
                 'Restaurant',
                 style: Theme.of(context)

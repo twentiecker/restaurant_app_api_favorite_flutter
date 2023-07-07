@@ -27,20 +27,16 @@ class RestaurantSearch extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: ratio * 20),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    padding: const EdgeInsets.all(0),
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: grey,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_sharp,
-                    color: Colors.white,
-                  )),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.arrow_back_sharp,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: ratio * 20),
               Text(
                 'Search',
                 style: Theme.of(context)

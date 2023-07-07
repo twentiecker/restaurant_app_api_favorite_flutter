@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import '../database/database_helper.dart';
 import '../models/list_restaurant.dart';
 import '../utils/result_state.dart';
-import 'detail_restaurant_provider.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   final DatabaseHelper databaseHelper;
@@ -26,7 +25,7 @@ class DatabaseProvider extends ChangeNotifier {
 
   void _getBookmarks() async {
     _bookmarks = await databaseHelper.getBookmarks();
-    if (_bookmarks.length > 0) {
+    if (_bookmarks.isNotEmpty) {
       _state = ResultState.hasData;
     } else {
       _state = ResultState.noData;
